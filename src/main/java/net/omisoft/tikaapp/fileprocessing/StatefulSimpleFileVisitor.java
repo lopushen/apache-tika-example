@@ -5,10 +5,11 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.ArrayList;
+import java.util.List;
 
 final class StatefulSimpleFileVisitor extends SimpleFileVisitor<Path> {
-    private ConcurrentLinkedQueue<File> files = new ConcurrentLinkedQueue<>();
+    private List<File> files = new ArrayList<>();
 
     @Override
     public FileVisitResult visitFile(
@@ -25,7 +26,7 @@ final class StatefulSimpleFileVisitor extends SimpleFileVisitor<Path> {
         return FileVisitResult.CONTINUE;
     }
 
-    public ConcurrentLinkedQueue<File> getFiles() {
+    public List<File> getFiles() {
         return files;
     }
 }

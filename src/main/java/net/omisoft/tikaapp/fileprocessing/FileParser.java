@@ -22,6 +22,10 @@ public class FileParser {
     private static org.apache.log4j.Logger log = Logger.getLogger(FileParser.class);
 
 
+    public void parseAll(List<File> files) {
+        files.forEach(this::parseSingleFile);
+    }
+
     private List<String> parseSingleFile(File file) {
         log.info("Started parsing file " + file.getName());
         AutoDetectParser parser = new AutoDetectParser();

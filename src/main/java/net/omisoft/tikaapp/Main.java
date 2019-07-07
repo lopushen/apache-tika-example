@@ -10,6 +10,7 @@ import org.apache.log4j.PropertyConfigurator;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static net.omisoft.tikaapp.utils.PropertiesHolder.inputFolderName;
@@ -32,8 +33,8 @@ public final class Main {
         ReportWriter reportGenerator = ReportWriter.getInstance();
         reportGenerator.createFileIfNotExists();
         FileProvider fileProvider = new FileProvider();
-        ConcurrentLinkedQueue<File> files = fileProvider.getFiles(inputFolderName);
+        List<File> files = fileProvider.getFiles(inputFolderName);
         FileParser parser = new FileParser();
-//        parser.parseAll(files);
+        parser.parseAll(files);
     }
 } 
