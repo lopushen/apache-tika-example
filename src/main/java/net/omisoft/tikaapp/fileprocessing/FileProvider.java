@@ -17,7 +17,7 @@ public class FileProvider {
         try {
             Files.walkFileTree(Paths.get(inputFolderName), fileVisitor);
         } catch (IOException e) {
-            log.debug("Problem opening the file " + e.getMessage());
+            log.error("Problem opening the file " + e.getMessage());
         }
         return fileVisitor.getFiles();
     }

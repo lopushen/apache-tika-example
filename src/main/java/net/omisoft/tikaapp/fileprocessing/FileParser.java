@@ -9,11 +9,9 @@ import org.apache.tika.parser.ParseContext;
 import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.SAXException;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,14 +20,18 @@ public class FileParser {
     private static org.apache.log4j.Logger log = Logger.getLogger(FileParser.class);
 
 
-    public void parseAll(List<File> files) {
-        files.forEach(this::parseSingleFile);
+    public void parseAll(List<File> files) throws IOException {
+        List<String> emails = files.stream().map(this::parseSingleFile).flatMap(Collection::stream).collect(Collectors.toList());
+        try (PrintWriter pw = new PrintWriter(new FileWriter("report.csv"))) {
+            emails.forEach(email-> pw.println(email));
+        }
     }
 
     private List<String> parseSingleFile(File file) {
         log.info("Started parsing file " + file.getName());
         AutoDetectParser parser = new AutoDetectParser();
         Metadata metadata = new Metadata();
+        metadata.add("filename", file.getName());
         EmailContentHandler addressHandler = new EmailContentHandler(new BodyContentHandler(-1), metadata);
         try (InputStream stream = new FileInputStream(file)) {
             ParseContext context = new ParseContext();
