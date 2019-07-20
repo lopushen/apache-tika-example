@@ -23,7 +23,7 @@ public class FileParser {
     public void parseAll(List<File> files) throws IOException {
         List<String> emails = files.stream().map(this::parseSingleFile).flatMap(Collection::stream).collect(Collectors.toList());
         try (PrintWriter pw = new PrintWriter(new FileWriter("report.csv"))) {
-            emails.forEach(email-> pw.println(email));
+            emails.forEach(pw::println);
         }
     }
 
@@ -33,12 +33,14 @@ public class FileParser {
         Metadata metadata = new Metadata();
         metadata.add("filename", file.getName());
         EmailContentHandler addressHandler = new EmailContentHandler(new BodyContentHandler(-1), metadata);
+
         try (InputStream stream = new FileInputStream(file)) {
             ParseContext context = new ParseContext();
             parser.parse(stream, addressHandler, metadata, context);
         } catch (SAXException | TikaException | IOException e) {
             log.error("Error parsing text " + e.getMessage());
         }
+
         String[] emails = metadata.getValues("emails");
         log.info("Ended parsing file " + file.getName());
 
