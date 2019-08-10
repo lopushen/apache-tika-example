@@ -20,17 +20,19 @@ public class FileParser {
 
 
     public void parseAll(List<File> files) throws IOException {
-        List<String> emails = files.stream().map(this::parseSingleFile).flatMap(Collection::stream).collect(Collectors.toList());
+        List<ParsingResult> parsingResults = files.stream().map(this::parseSingleFile).collect(Collectors.toList());
         try (PrintWriter pw = new PrintWriter(new FileWriter("report.csv"))) {
-            emails.forEach(pw::println);
+            pw.println("Email,File");
+            parsingResults.stream().filter(r -> r.emails != null && r.emails.length > 0).forEach(r -> {
+                Arrays.stream(r.emails).forEach(email -> pw.println(String.format("%s,%s", email, r.fileName)));
+            });
         }
     }
 
-    private List<String> parseSingleFile(File file) {
+    private ParsingResult parseSingleFile(File file) {
         log.info("Started parsing file " + file.getName());
         AutoDetectParser parser = new AutoDetectParser();
         Metadata metadata = new Metadata();
-        metadata.add("filename", file.getName());
         EmailContentHandler addressHandler = new EmailContentHandler(new BodyContentHandler(-1), metadata);
 
         try (InputStream stream = new FileInputStream(file)) {
@@ -43,6 +45,16 @@ public class FileParser {
         String[] emails = metadata.getValues("emails");
         log.info("Ended parsing file " + file.getName());
 
-        return Arrays.stream(emails).collect(Collectors.toList());
+        return new ParsingResult(file.getName(), emails);
+    }
+
+    private static class ParsingResult {
+        private String fileName;
+        private String[] emails;
+
+        public ParsingResult(String fileName, String[] emails) {
+            this.fileName = fileName;
+            this.emails = emails;
+        }
     }
 }
