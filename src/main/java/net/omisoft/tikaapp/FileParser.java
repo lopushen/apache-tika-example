@@ -1,6 +1,5 @@
-package net.omisoft.tikaapp.fileprocessing;
+package net.omisoft.tikaapp;
 
-import net.omisoft.tikaapp.tikautils.EmailContentHandler;
 import org.apache.log4j.Logger;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;

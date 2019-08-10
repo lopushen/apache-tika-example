@@ -1,4 +1,4 @@
-package net.omisoft.tikaapp.fileprocessing;
+package net.omisoft.tikaapp;
 
 import org.apache.log4j.Logger;
 

@@ -1,9 +1,6 @@
 package net.omisoft.tikaapp;
 
-import net.omisoft.tikaapp.fileprocessing.FileParser;
-import net.omisoft.tikaapp.fileprocessing.FileProvider;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,14 +8,11 @@ import java.util.List;
 
 public final class Main {
     private static org.apache.log4j.Logger log = Logger.getLogger(Main.class);
-    private static final String inputFolderName = "files";
-
 
     public static void main(String... aArgs) throws IOException {
-        PropertyConfigurator.configure("resources/log4j.properties");
         log.info("Starting search...");
         FileProvider fileProvider = new FileProvider();
-        List<File> files = fileProvider.getFiles(inputFolderName);
+        List<File> files = fileProvider.getFiles("files");
         FileParser parser = new FileParser();
         parser.parseAll(files);
     }

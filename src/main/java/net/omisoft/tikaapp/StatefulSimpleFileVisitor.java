@@ -1,4 +1,4 @@
-package net.omisoft.tikaapp.fileprocessing;
+package net.omisoft.tikaapp;
 
 import java.io.File;
 import java.nio.file.FileVisitResult;

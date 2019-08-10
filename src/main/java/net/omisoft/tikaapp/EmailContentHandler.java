@@ -1,4 +1,4 @@
-package net.omisoft.tikaapp.tikautils;
+package net.omisoft.tikaapp;
 
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.sax.ContentHandlerDecorator;
